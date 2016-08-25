@@ -16,12 +16,12 @@
 
 
 /**
- * Given a template string to format and serveral strings
+ * Given a template string to format and several strings
  * to fill the template, it returns the formatted string.
  * @param template This is a string containing zero, one or
  *                 more occurrences of "%s".
  * @param ...strings
- * @returns The formattted template.
+ * @returns The formatted template.
  */
 function format(subject) {
   'use strict';

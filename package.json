@@ -1,7 +1,7 @@
 {
   "name": "personality-text-summary",
-  "version": "1.0.2",
-  "description": "Generate Text Summary for Personality Insights Profile",
+  "version": "1.0.3",
+  "description": "Generate Text Summary for Personality Insights Profile. Forked to support subject parameter.",
   "main": "bin/personality-text-summary.js",
   "exportName": "TextSummary",
   "scripts": {
@@ -9,9 +9,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:personality-insights/text-summary.git"
+    "url": "git@github.com:thedavidtran/text-summary.git"
   },
-  "author": "Ary Pablo Batista <batarypa@ar.ibm.com>",
+  "author": "David Tran <david@davidtran.io>",
   "license": "Apache-2.0",
   "keywords": [
     "personality",

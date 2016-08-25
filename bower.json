@@ -1,8 +1,9 @@
 {
   "name": "personality-text-summary",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "authors": [
-    "Ary Pablo Batista <batarypa@ar.ibm.com>"
+    "Ary Pablo Batista <batarypa@ar.ibm.com>",
+    "David Tran <david@davidtran.io>"
   ],
   "description": "Generate a text description from a given personality profile.",
   "main": "bin/personality-text-summary.js",

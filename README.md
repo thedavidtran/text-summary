@@ -16,7 +16,8 @@ Generate a text description from a given personality profile.
 2. **Generate the text description** from a profile.
 ```
 textSummary = new TextSummary('en');
-summaryText = textSummary.getSummary(profile);
+subject = 'male';
+summaryText = textSummary.getSummary(profile, subject);
 ```
 3. Print it somewhere!
 
@@ -27,11 +28,12 @@ See the complete [example code][example_code] or [try it live][live_example]
 
 Public methods:
 * `constructor :: (Locale) -> TextSummary` - Returns a TextSummary instance.
-* `getSummary :: (Profile) -> String` - Returns a text summary for the given profile.
+* `getSummary :: (Profile, Subject) -> String` - Returns a text summary for the given profile.
 
 Where:
 * `Locale` is one of the [available locales](#available-locales).
 * `Profile` is a IBM Watson Personality Insights profile which is basically the service JSON output, parsed into a JavaScript `Object`.
+* `Subject` is one of the [available subjects](#available-subjects).
 
 
 ## Available Locales
@@ -40,6 +42,10 @@ At the moment the available locales are:
   - `en`
   - `es`
 
+## Available Subjects
+ - `male`
+ - `female`
+ - `they`
 
 ## Build from source
 

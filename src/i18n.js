@@ -120,12 +120,10 @@ var translatorFactory = (function () {
     };
 
     /**
-     * Get the appropiate dictionary file for user's locale.
+     * Get the appropriate dictionary file for user's locale.
      */
     self.getDictionary = function (locale) {
-      var locales = self.getLocaleOptions(locale),
-          dict;
-
+      var locales = self.getLocaleOptions(locale);
 
       for (var i = 0; i < locales.length; i++) {
         if (self.dictionaries[locales[i]]) {
