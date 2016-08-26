@@ -61,7 +61,7 @@ module.exports = function (lang) {
     return result;
   }
 
-  function getSentenceTemplateString(sentenceTemplate) {
+  function getSentenceTemplateString(sentenceTemplate, subject) {
   	var SUBJECT_SENTENCE_TEMPLATE_MAP = {
   	  male: {
         'You are %s': 'He is %s',
