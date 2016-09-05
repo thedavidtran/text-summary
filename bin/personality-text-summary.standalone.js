@@ -34,6 +34,8 @@ module.exports = function (lang) {
   self.valuesData = dictionary.values;
   self.needsData = dictionary.needs;
 
+  self.subject = 'you';
+
   function compareByRelevance(o1, o2) {
     var result = 0;
 
@@ -62,7 +64,7 @@ module.exports = function (lang) {
     return result;
   }
 
-  function getSentenceTemplateString(sentenceTemplate, subject) {
+  function getSentenceTemplateString(sentenceTemplate) {
     var SUBJECT_SENTENCE_TEMPLATE_MAP = {
       male: {
         'You are %s': 'He is %s',
@@ -123,7 +125,7 @@ module.exports = function (lang) {
     },
         sentenceTemplateMap;
 
-    sentenceTemplateMap = subject && SUBJECT_SENTENCE_TEMPLATE_MAP[subject] || SUBJECT_SENTENCE_TEMPLATE_MAP['default'];
+    sentenceTemplateMap = self.subject && SUBJECT_SENTENCE_TEMPLATE_MAP[self.subject] || SUBJECT_SENTENCE_TEMPLATE_MAP['default'];
     return sentenceTemplateMap[sentenceTemplate] || sentenceTemplate;
   }
 
@@ -200,7 +202,7 @@ module.exports = function (lang) {
     return traitMult;
   }
 
-  function assembleTraits(personalityTree, subject) {
+  function assembleTraits(personalityTree) {
     var sentences = [],
         big5elements = [],
         relevantBig5,
@@ -231,13 +233,13 @@ module.exports = function (lang) {
       case 2:
         // Report 1 adjective.
         adj = getCircumplexAdjective(relevantBig5[0], relevantBig5[1], 0);
-        sentences.push(format(tphrase(getSentenceTemplateString('You are %s', subject)), adj) + '.');
+        sentences.push(format(tphrase(getSentenceTemplateString('You are %s')), adj) + '.');
         break;
       case 3:
         // Report 2 adjectives.
         adj1 = getCircumplexAdjective(relevantBig5[0], relevantBig5[1], 0);
         adj2 = getCircumplexAdjective(relevantBig5[1], relevantBig5[2], 1);
-        sentences.push(format(tphrase(getSentenceTemplateString('You are %s and %s', subject)), adj1, adj2) + '.');
+        sentences.push(format(tphrase(getSentenceTemplateString('You are %s and %s')), adj1, adj2) + '.');
         break;
       case 4:
       case 5:
@@ -245,14 +247,14 @@ module.exports = function (lang) {
         adj1 = getCircumplexAdjective(relevantBig5[0], relevantBig5[1], 0);
         adj2 = getCircumplexAdjective(relevantBig5[1], relevantBig5[2], 1);
         adj3 = getCircumplexAdjective(relevantBig5[2], relevantBig5[3], 2);
-        sentences.push(format(tphrase(getSentenceTemplateString('You are %s, %s and %s', subject)), adj1, adj2, adj3) + '.');
+        sentences.push(format(tphrase(getSentenceTemplateString('You are %s, %s and %s')), adj1, adj2, adj3) + '.');
         break;
     }
 
     return sentences;
   }
 
-  function assembleFacets(personalityTree, subject) {
+  function assembleFacets(personalityTree) {
     var sentences = [],
         facetElements = [],
         info,
@@ -272,9 +274,9 @@ module.exports = function (lang) {
     facetElements.sort(compareByRelevance);
     // Assemble an adjective and description for the two most important facets.
     info = getFacetInfo(facetElements[0]);
-    sentences.push(format(tphrase(getSentenceTemplateString('You are %s', subject)), info.term) + ': ' + info.description + '.');
+    sentences.push(format(tphrase(getSentenceTemplateString('You are %s')), info.term) + ': ' + info.description + '.');
     info = getFacetInfo(facetElements[1]);
-    sentences.push(format(tphrase(getSentenceTemplateString('You are %s', subject)), info.term) + ': ' + info.description + '.');
+    sentences.push(format(tphrase(getSentenceTemplateString('You are %s')), info.term) + ': ' + info.description + '.');
 
     // If all the facets correspond to the same feature, continue until a
     // different parent feature is found.
@@ -285,7 +287,7 @@ module.exports = function (lang) {
       }
     }
     info = getFacetInfo(facetElements[i]);
-    sentences.push(format(tphrase(getSentenceTemplateString('And you are %s', subject)), info.term) + ': ' + info.description + '.');
+    sentences.push(format(tphrase(getSentenceTemplateString('And you are %s')), info.term) + ': ' + info.description + '.');
 
     return sentences;
   }
@@ -293,7 +295,7 @@ module.exports = function (lang) {
   /**
    * Assemble the list of values and sort them based on relevance.
    */
-  function assembleValues(valuesTree, subject) {
+  function assembleValues(valuesTree) {
     var sentences = [],
         valuesList = [],
         sameQI,
@@ -326,16 +328,16 @@ module.exports = function (lang) {
       term2 = info2.term;
       switch (intervalFor(valuesList[0].percentage)) {
         case 0:
-          sentence = format(tphrase(getSentenceTemplateString('You are relatively unconcerned with both %s and %s', subject)), term1, term2) + '.';
+          sentence = format(tphrase(getSentenceTemplateString('You are relatively unconcerned with both %s and %s')), term1, term2) + '.';
           break;
         case 1:
-          sentence = format(tphrase(getSentenceTemplateString("You don't find either %s or %s to be particularly motivating for you", subject)), term1, term2) + '.';
+          sentence = format(tphrase(getSentenceTemplateString("You don't find either %s or %s to be particularly motivating for you")), term1, term2) + '.';
           break;
         case 2:
-          sentence = format(tphrase(getSentenceTemplateString('You value both %s and %s a bit', subject)), term1, term2) + '.';
+          sentence = format(tphrase(getSentenceTemplateString('You value both %s and %s a bit')), term1, term2) + '.';
           break;
         case 3:
-          sentence = format(tphrase(getSentenceTemplateString('You consider both %s and %s to guide a large part of what you do', subject)), term1, term2) + '.';
+          sentence = format(tphrase(getSentenceTemplateString('You consider both %s and %s to guide a large part of what you do')), term1, term2) + '.';
           break;
       }
       sentences.push(sentence);
@@ -349,16 +351,16 @@ module.exports = function (lang) {
         // Process it this way because the code is the same.
         switch (intervalFor(valuesList[i].percentage)) {
           case 0:
-            sentence = format(tphrase(getSentenceTemplateString('You are relatively unconcerned with %s', subject)), valuesInfo[i].term);
+            sentence = format(tphrase(getSentenceTemplateString('You are relatively unconcerned with %s')), valuesInfo[i].term);
             break;
           case 1:
-            sentence = format(tphrase(getSentenceTemplateString("You don't find %s to be particularly motivating for you", subject)), valuesInfo[i].term);
+            sentence = format(tphrase(getSentenceTemplateString("You don't find %s to be particularly motivating for you")), valuesInfo[i].term);
             break;
           case 2:
-            sentence = format(tphrase(getSentenceTemplateString('You value %s a bit more', subject)), valuesInfo[i].term);
+            sentence = format(tphrase(getSentenceTemplateString('You value %s a bit more')), valuesInfo[i].term);
             break;
           case 3:
-            sentence = format(tphrase(getSentenceTemplateString('You consider %s to guide a large part of what you do', subject)), valuesInfo[i].term);
+            sentence = format(tphrase(getSentenceTemplateString('You consider %s to guide a large part of what you do')), valuesInfo[i].term);
             break;
         }
         sentence = sentence.concat(': ').concat(valuesInfo[i].description.toLowerCase()).concat('.');
@@ -372,7 +374,7 @@ module.exports = function (lang) {
   /**
    * Assemble the list of needs and sort them based on value.
    */
-  function assembleNeeds(needsTree, subject) {
+  function assembleNeeds(needsTree) {
     var sentences = [],
         needsList = [],
         word,
@@ -392,16 +394,16 @@ module.exports = function (lang) {
     // Form the right sentence for the single need.
     switch (intervalFor(needsList[0].percentage)) {
       case 0:
-        sentence = tphrase(getSentenceTemplateString('Experiences that make you feel high %s are generally unappealing to you', subject));
+        sentence = tphrase(getSentenceTemplateString('Experiences that make you feel high %s are generally unappealing to you'));
         break;
       case 1:
-        sentence = tphrase(getSentenceTemplateString('Experiences that give a sense of %s hold some appeal to you', subject));
+        sentence = tphrase(getSentenceTemplateString('Experiences that give a sense of %s hold some appeal to you'));
         break;
       case 2:
-        sentence = tphrase(getSentenceTemplateString('You are motivated to seek out experiences that provide a strong feeling of %s', subject));
+        sentence = tphrase(getSentenceTemplateString('You are motivated to seek out experiences that provide a strong feeling of %s'));
         break;
       case 3:
-        sentence = tphrase(getSentenceTemplateString('Your choices are driven by a desire for %s', subject));
+        sentence = tphrase(getSentenceTemplateString('Your choices are driven by a desire for %s'));
         break;
     }
     sentence = format(sentence, word).concat(".");
@@ -415,12 +417,11 @@ module.exports = function (lang) {
    * summary describing the result.
    *
    * @param tree A TraitTree.
-   * @param subject An optional string to define the subject in the phrase.
    * @return An array of strings representing the
    *         paragraphs of the text summary.
    */
-  function assemble(tree, subject) {
-    return [assembleTraits(tree.children[0], subject), assembleFacets(tree.children[0], subject), assembleNeeds(tree.children[1], subject), assembleValues(tree.children[2], subject)];
+  function assemble(tree) {
+    return [assembleTraits(tree.children[0]), assembleFacets(tree.children[0]), assembleNeeds(tree.children[1]), assembleValues(tree.children[2])];
   }
 
   /**
@@ -428,14 +429,29 @@ module.exports = function (lang) {
    * summary describing the result.
    *
    * @param tree A TraitTree.
-   * @param subject An optional string to define the subject in the phrase. Default is "You", valid options
-   * male|female|they.
    * @return A String containing the text summary.
    */
-  function getSummary(profile, subject) {
-    return assemble(profile.tree, subject).map(function (paragraph) {
+  function getSummary(profile) {
+    return assemble(profile.tree).map(function (paragraph) {
       return paragraph.join(" ");
     }).join("\n");
+  }
+
+  /**
+   * @param subject Set the subject value.
+   * @return Set subject value;
+   */
+  function setSubject(subject) {
+    switch (subject) {
+      case "male":
+      case "female":
+      case "they":
+        self.subject = subject;
+        break;
+      default:
+        self.subject = 'you';
+    }
+    return self.subject;
   }
 
   /* Text-Summary API */
@@ -445,6 +461,7 @@ module.exports = function (lang) {
   self.assembleValues = assembleValues;
   self.assemble = assemble;
   self.getSummary = getSummary;
+  self.setSubject = setSubject;
 
   return self;
 };
